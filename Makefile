@@ -133,6 +133,8 @@ UPROGS=\
 	$U/_wc\
 	$U/_zombie\
 	$U/_pingpong\
+	$U/_time\
+	$U/_pingpong2\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
