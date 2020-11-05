@@ -6,8 +6,6 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 
-// <<<remove this comment and fill your code here if needed>>>
-
 int main(int argc, char *argv[])
 {
     if (argc != 2)
@@ -22,27 +20,17 @@ int main(int argc, char *argv[])
     // time before starting rounds
     int start_time = rtime();
 
-    // <<<remove this comment and fill your code here>>>
-    /**
-     * 1)pipeを作成する
-     * 2)forkする
-     * 3)pipeをつなぐ
-     * 4)相互に送り合う 
-     * %)子プロセスは最後にexit()する
-     * 6) closeする
-     */
-
     int pid;
     // parent to child
-    int pipefd[2];
+    int pipePtoC[2];
     // child to parent
-    int pipe2fd[2];
+    int pipeCtoP[2];
 
     int round = 0;
     int parentTurn = 1;
 
     // pipe error
-    if (pipe(pipefd) == -1 || pipe(pipe2fd) == -1)
+    if (pipe(pipePtoC) == -1 || pipe(pipeCtoP) == -1)
     {
         fprintf(1, "error: pipe\n");
         exit(1);
@@ -59,43 +47,43 @@ int main(int argc, char *argv[])
     {
         // child process
         unsigned char data = 0;
-        close(pipe2fd[0]);
-        close(pipefd[1]);
+        close(pipeCtoP[0]);
+        close(pipePtoC[1]);
         while (round < n)
         {
             if (!(parentTurn == 1))
             {
-                write(pipe2fd[1], &data, 1);
+                write(pipeCtoP[1], &data, 1);
                 parentTurn = 1;
                 round++;
             }
             else
             {
-                read(pipefd[0], &data, 1);
+                read(pipePtoC[0], &data, 1);
                 data = data + 1;
                 parentTurn = 0;
             }
         }
-        close(pipe2fd[1]);
-        close(pipefd[0]);
+        close(pipeCtoP[1]);
+        close(pipePtoC[0]);
         exit(0);
     }
     else
     {
         // parent process
         unsigned char data = 0;
-        close(pipe2fd[1]);
-        close(pipefd[0]);
+        close(pipeCtoP[1]);
+        close(pipePtoC[0]);
         while (round < n)
         {
             if (parentTurn == 1)
             {
-                write(pipefd[1], &data, 1);
+                write(pipePtoC[1], &data, 1);
                 parentTurn = 0;
             }
             else
             {
-                read(pipe2fd[0], &data, 1);
+                read(pipeCtoP[0], &data, 1);
                 data = data + 1;
                 round++;
                 parentTurn = 1;
@@ -103,8 +91,8 @@ int main(int argc, char *argv[])
         }
         int *status = 0;
         wait(status);
-        close(pipe2fd[0]);
-        close(pipefd[1]);
+        close(pipeCtoP[0]);
+        close(pipePtoC[1]);
     }
     // print # of time in n rounds
     printf("# of time in %d rounds: %d[μs]\n", n, rtime() - start_time);

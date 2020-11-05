@@ -20,15 +20,6 @@ int main(int argc, char *argv[])
     // tick value before starting rounds
     int start_tick = uptime();
 
-    // <<<remove this comment and fill your code here>>>
-    /**
-     * 1)pipeを作成する
-     * 2)forkする
-     * 3)pipeをつなぐ
-     * 4)相互に送り合う 
-     * %)子プロセスは最後にexit()する
-     * 6) closeする
-     */
     int pid;
     // parent to child
     int pipePtoC[2];
