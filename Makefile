@@ -135,6 +135,8 @@ UPROGS=\
 	$U/_pingpong\
 	$U/_time\
 	$U/_pingpong2\
+	$U/_testExec\
+
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

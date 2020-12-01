@@ -371,6 +371,11 @@ sys_open(void)
   iunlock(ip);
   end_op();
 
+  if(omode & O_APPEND){
+    printf("open file with append mode\n");
+    f->off = f->ip->size;
+  }
+
   return fd;
 }
 
