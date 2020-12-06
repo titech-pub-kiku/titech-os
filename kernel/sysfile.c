@@ -15,6 +15,7 @@
 #include "sleeplock.h"
 #include "file.h"
 #include "fcntl.h"
+#include "stdio.h"
 
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
@@ -372,7 +373,6 @@ sys_open(void)
   end_op();
 
   if(omode & O_APPEND){
-    printf("open file with append mode\n");
     f->off = f->ip->size;
   }
 
@@ -522,4 +522,33 @@ sys_pipe(void)
     return -1;
   }
   return 0;
+}
+
+// return new offset
+uint64
+sys_lseek(void){
+  int offset, whence;
+  struct file *f;
+  
+  if(argfd(0, 0, &f) < 0 || argint(1, &offset) < 0 || argint(2, &whence) < 0){
+    return -1;
+  }
+
+  if((f->ip->size + offset) < 0 || (f->off + offset) > MAXFILE*BSIZE){
+    printf("オフセットエラー\n");
+    return -1;
+  }
+  if (whence & SEEK_SET)
+  {
+    f->off = offset;
+  }
+  else if (whence & SEEK_CUR)
+  {
+    f->off = f->off + offset;
+  }
+  else if (whence & SEEK_END)
+  {
+    f->off = f->ip->size + offset;
+  }
+  return f->off;
 }

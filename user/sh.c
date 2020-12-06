@@ -382,8 +382,6 @@ parseredirs(struct cmd *cmd, char **ps, char *es)
     if(gettoken(ps, es, &q, &eq) != 'a')
       panic("missing file for redirection");
 
-    printf("process redirect\n");
-
     switch(tok){
     case '<':
       cmd = redircmd(cmd, q, eq, O_RDONLY, 0);
@@ -393,7 +391,6 @@ parseredirs(struct cmd *cmd, char **ps, char *es)
       break;
     case '+':  // >>
       cmd = redircmd(cmd, q, eq, O_WRONLY|O_CREATE|O_APPEND, 1);
-      printf("input >> commnad\n");
       break;
     
     }

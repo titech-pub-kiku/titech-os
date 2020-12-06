@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "__config": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "chrono": "cpp",
+        "memory": "cpp"
     }
 }
