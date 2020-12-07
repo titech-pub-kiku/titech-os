@@ -38,3 +38,4 @@ entry("sleep");
 entry("uptime");
 entry("rtime");
 entry("lseek");
+entry("symlink");

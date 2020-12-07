@@ -13,6 +13,8 @@ main(int argc, char *argv[])
 
   if(strcmp("-s",argv[1]) == 0){
     printf("-s option is conducted\n");
+    symlink("hoge","huge");
+    exit(0);
   }
 
   if (link(argv[1], argv[2]) < 0)

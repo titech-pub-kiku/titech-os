@@ -102,6 +102,9 @@ extern uint64 sys_write(void);
 extern uint64 sys_uptime(void);
 extern uint64 sys_rtime(void);
 extern uint64 sys_lseek(void);
+extern uint64 sys_symlink(void);
+
+
 
 static uint64 (*syscalls[])(void) = {
     [SYS_fork] sys_fork,
@@ -127,6 +130,7 @@ static uint64 (*syscalls[])(void) = {
     [SYS_close] sys_close,
     [SYS_rtime] sys_rtime,
     [SYS_lseek] sys_lseek,
+    [SYS_symlink] sys_symlink,
 };
 
 void syscall(void)

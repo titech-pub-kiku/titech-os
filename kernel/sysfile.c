@@ -538,8 +538,18 @@ sys_lseek(void){
     printf("オフセットエラー\n");
     return -1;
   }
+
+  if(f->type == FD_DEVICE || f->type == FD_PIPE ){
+    return -1;
+  }
+
   if (whence & SEEK_SET)
   {
+    if(f->ip->size < offset){
+      ilock(f->ip);
+      f->ip->size = offset;
+      iunlock(f->ip);
+    }
     f->off = offset;
   }
   else if (whence & SEEK_CUR)
@@ -551,4 +561,24 @@ sys_lseek(void){
     f->off = f->ip->size + offset;
   }
   return f->off;
+}
+
+// param[0] : oldpath
+// param[2] : newpath
+uint64
+sys_symlink(void)
+{
+  char path[MAXPATH], linkaddr[MAXPATH];
+  struct inode *ip;
+
+  begin_op();
+  if (argstr(0, path, MAXPATH) < 0 || argstr(0, linkaddr, MAXPATH) < 0  || (ip = create(path, T_FILE, 0, 0)) == 0)
+  {
+    end_op();
+    printf("failed\n");
+    return -1;
+  }
+  printf("%s to %s\n", path, linkaddr);
+  end_op();
+  return 0;
 }

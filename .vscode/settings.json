@@ -3,6 +3,7 @@
         "__config": "cpp",
         "locale": "cpp",
         "chrono": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "ostream": "cpp"
     }
 }

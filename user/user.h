@@ -25,6 +25,9 @@ int sleep(int);
 int uptime(void);
 int rtime(void);
 int lseek(int,int,int);
+int symlink(char *,char*);
+
+
 
 // ulib.c
 int stat(const char *, struct stat *);
