@@ -21,3 +21,5 @@
 #define SYS_mkdir 20
 #define SYS_close 21
 #define SYS_rtime 22
+#define SYS_lseek 23
+#define SYS_symlink 24
